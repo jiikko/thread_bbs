@@ -12,3 +12,20 @@ def connect():
 
 def select():
     pass
+
+def insert_topics(title, body):
+    conn = connect()
+    cur = conn.cursor()
+    cur.execute("insert into topics(title, body) values('aaaaaaa', 'bbbbbb')")
+    conn.commit()
+    cur.close()
+    conn.close()
+
+def execute(sql):
+    conn = connect()
+    cur = conn.cursor()
+    result = cur.execute(sql)
+    conn.commit()
+    cur.close()
+    conn.close()
+    return result

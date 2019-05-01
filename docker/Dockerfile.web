@@ -20,4 +20,4 @@ WORKDIR /app
 ADD requirements.txt /app/requirements.txt
 RUN pip install -r ./requirements.txt
 
-CMD yes | dev_appserver.py --host=0.0.0.0 .
+CMD yes | dev_appserver.py --env_var MYSQL_HOST=$MYSQL_HOST --host=0.0.0.0 .
