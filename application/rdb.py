@@ -1,0 +1,14 @@
+import MySQLdb
+import os
+
+def connect():
+    db = MySQLdb.connect(
+            host=os.getenv("MYSQL_HOST", "127.0.0.1"),
+            user='root',
+            passwd='',
+            db='thread_bbs_development',
+            charset='utf8mb4')
+    return db
+
+def select():
+    pass

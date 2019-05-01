@@ -7,6 +7,10 @@ services:
       - ./mysql:/var/lib/mysql
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - app-network
+    expose:
+      - '3306'
   app:
     build:
       context: .
@@ -15,3 +19,16 @@ services:
       - ./:/app
     ports:
       - 8080:8080
+    expose:
+      - '8080'
+    links:
+      - db
+    environment:
+      - MYSQL_HOST=db
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+networks:
+  app-network:
