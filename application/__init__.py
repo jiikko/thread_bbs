@@ -17,6 +17,11 @@ def top():
 def topics_new():
     return render_template('topics/new.html')
 
+@app.route('/topics')
+def topics_index():
+    topics = rdb.fetch_all_topics()
+    return render_template('topics/index.html', topics=topics)
+
 @app.route('/topics', methods=['POST'])
 def topics_create():
     logging.info('posted topics')

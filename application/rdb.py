@@ -13,6 +13,16 @@ def connect():
 def select():
     pass
 
+def fetch_all_topics():
+    conn = connect()
+    cur = conn.cursor()
+    cur.execute("select * from topics")
+    result = cur.fetchall()
+    conn.commit()
+    cur.close()
+    conn.close()
+    return result
+
 def insert_topics(title, body):
     conn = connect()
     cur = conn.cursor()
