@@ -2,7 +2,7 @@ FROM python:2.7-slim
 
 RUN apt-get -y update \
 && apt-get install -y unzip wget \
-&& apt-get install -y -qq --no-install-recommends python-mysqldb \
+&& apt-get install -y -qq --no-install-recommends libmariadbclient-dev build-essential \
 && apt-get clean
 
 #Setup the python path so that it finds the MySQLdb dist package
