@@ -2,6 +2,7 @@ import MySQLdb
 import os
 import contextlib
 import logging
+import application
 
 def fetch_all_topics(where=None, limit=None):
     if where:
@@ -29,10 +30,22 @@ def insert_topics(title=None, body=None):
 # ex) with MySQLdb.connect(**args) as cur:
 #        cur.execute("INSERT INTO pokos (id, poko_name) VALUES (%s, %s)", (id, poko_name))
 def conn():
-    conn = MySQLdb.connect(
-            host=os.getenv("MYSQL_HOST", "127.0.0.1"),
-            user='root',
-            passwd='',
-            db='thread_bbs_development',
-            charset='utf8mb4')
-    return conn
+    if application.app.config.get('TESTING'):
+        logging.debug('environment: test')
+        MYSQL_CONFIG = {
+            'host': os.getenv("MYSQL_HOST", "127.0.0.1"),
+            'user': 'root',
+            'passwd':  '',
+            'db': 'thread_bbs_test',
+            'charset': 'utf8mb4',
+        }
+    else:
+        logging.debug('environment: development')
+        MYSQL_CONFIG = {
+            'host': os.getenv("MYSQL_HOST", "127.0.0.1"),
+            'user': 'root',
+            'passwd':  '',
+            'db': 'thread_bbs_development',
+            'charset': 'utf8mb4',
+        }
+    return MySQLdb.connect(**MYSQL_CONFIG)
