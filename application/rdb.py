@@ -1,52 +1,38 @@
 import MySQLdb
 import os
+import contextlib
+import logging
 
-def connect():
-    db = MySQLdb.connect(
+def fetch_all_topics(where=None, limit=None):
+    if where:
+        sql = "select * from topics where %s" % (where)
+    else:
+        sql = "select * from topics"
+    if limit:
+        sql += (' limit %d' % limit)
+    result = None
+    with conn() as cursor:
+        cursor.execute(sql)
+        result = cursor.fetchall()
+    return result
+
+def find_topic(id):
+    where_clause = 'id = %s' % id
+    return fetch_all_topics(where=where_clause, limit=1)[0]
+
+def insert_topics(title=None, body=None):
+    sql = "insert into topics(title, body) values(%s, %s)"
+    with conn() as cursor:
+        cursor.execute(sql, [title, body])
+
+# use `with` when call conn()!!
+# ex) with MySQLdb.connect(**args) as cur:
+#        cur.execute("INSERT INTO pokos (id, poko_name) VALUES (%s, %s)", (id, poko_name))
+def conn():
+    conn = MySQLdb.connect(
             host=os.getenv("MYSQL_HOST", "127.0.0.1"),
             user='root',
             passwd='',
             db='thread_bbs_development',
             charset='utf8mb4')
-    return db
-
-def select():
-    pass
-
-def fetch_all_topics():
-    conn = connect()
-    cur = conn.cursor()
-    cur.execute("select * from topics")
-    result = cur.fetchall()
-    conn.commit()
-    cur.close()
-    conn.close()
-    return result
-
-def insert_topics(title=None, body=None):
-    conn = connect()
-    cur = conn.cursor()
-    cur.execute(
-            "insert into topics(title, body) values('%s', '%s')" % (title, body))
-    conn.commit()
-    cur.close()
-    conn.close()
-
-def find_topic(id):
-    conn = connect()
-    cur = conn.cursor()
-    cur.execute('select * from topics where id = %s limit 1' % id)
-    result = cur.fetchall()[0]
-    conn.commit()
-    cur.close()
-    conn.close()
-    return result
-
-def execute(sql):
-    conn = connect()
-    cur = conn.cursor()
-    result = cur.execute(sql)
-    conn.commit()
-    cur.close()
-    conn.close()
-    return result
+    return conn
