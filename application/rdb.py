@@ -23,13 +23,24 @@ def fetch_all_topics():
     conn.close()
     return result
 
-def insert_topics(title, body):
+def insert_topics(title=None, body=None):
     conn = connect()
     cur = conn.cursor()
-    cur.execute("insert into topics(title, body) values('aaaaaaa', 'bbbbbb')")
+    cur.execute(
+            "insert into topics(title, body) values('%s', '%s')" % (title, body))
     conn.commit()
     cur.close()
     conn.close()
+
+def find_topic(id):
+    conn = connect()
+    cur = conn.cursor()
+    cur.execute('select * from topics where id = %s limit 1' % id)
+    result = cur.fetchall()[0]
+    conn.commit()
+    cur.close()
+    conn.close()
+    return result
 
 def execute(sql):
     conn = connect()

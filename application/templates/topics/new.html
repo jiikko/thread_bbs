@@ -1,5 +1,10 @@
-<h1>新しい投稿<h1>
-<form method='POST' action='/topics'>
-  <input type='TEXT' >
-  <input type="SUBMIT" value='投稿する'>
-  <form>
+<h1>新しい投稿</h1>
+<form method='post' action='/topics/new'>
+  <p>タイトル</p>
+  <input type='text' name='title'>
+  <p>本文</p>
+  <input type='text' name='body'>
+  <p>
+    <input type="submit" value='投稿する'>
+  </p>
+</form>

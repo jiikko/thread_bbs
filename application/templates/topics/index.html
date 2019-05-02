@@ -3,6 +3,8 @@
 <h1>topicsの一覧です</h1>
 <ul>
 {% for topic in topics %}
-  <li> {{ topic[0] }} - {{ topic[1] }} </li>
+  <li>
+    <a href='topics/{{ topic[0] }}'>{{ topic[0] }} - {{ topic[1] }} </a>
+  </li>
 {% endfor %}
 </ul>

@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import logging
 import rdb
 import os
+from werkzeug.utils import redirect
 
 app = Flask(__name__)
 
@@ -13,18 +14,20 @@ def form():
 def top():
     return render_template('top.html')
 
-@app.route('/topics/new')
+@app.route('/topics/new', methods=['POST', 'GET'])
 def topics_new():
-    return render_template('topics/new.html')
+    if request.method == 'POST':
+        rdb.insert_topics(title=request.form['title'], body=request.form['body'])
+        return redirect("/topics")
+    else:
+        return render_template('topics/new.html')
 
 @app.route('/topics')
 def topics_index():
     topics = rdb.fetch_all_topics()
     return render_template('topics/index.html', topics=topics)
 
-@app.route('/topics', methods=['POST'])
-def topics_create():
-    logging.info('posted topics')
-    rdb.insert_topics(title='title desu', body='body desu')
-
-    return render_template('topics/new.html')
+@app.route('/topics/<id>')
+def topics_show(id):
+    topic = rdb.find_topic(id)
+    return render_template('topics/show.html', topic=topic)
