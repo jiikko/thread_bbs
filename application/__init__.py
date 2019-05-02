@@ -6,10 +6,6 @@ from werkzeug.utils import redirect
 
 app = Flask(__name__)
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
-
 @app.route('/')
 def top():
     return render_template('top.html')
