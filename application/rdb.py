@@ -26,6 +26,11 @@ def insert_topics(title=None, body=None):
     with conn() as cursor:
         cursor.execute(sql, [title, body])
 
+def update_topic(id, title=None, body=None):
+    sql = "update topics set title = %s, body = %s where id = %s"
+    with conn() as cursor:
+        cursor.execute(sql, [title, body, id])
+
 # use `with` when call conn()!!
 # ex) with MySQLdb.connect(**args) as cur:
 #        cur.execute("INSERT INTO pokos (id, poko_name) VALUES (%s, %s)", (id, poko_name))

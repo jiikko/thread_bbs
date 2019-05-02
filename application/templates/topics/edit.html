@@ -1,0 +1,10 @@
+<h1>投稿の編集</h1>
+<form method='post' action='/topics/{{ topic[0] }}/edit'>
+  <p>タイトル</p>
+  <input type='text' name='title' value='{{ topic[1] }}'>
+  <p>本文</p>
+  <input type='text' name='body' value='{{ topic[2] }}'>
+  <p>
+    <input type="submit" value='投稿する'>
+  </p>
+</form>
