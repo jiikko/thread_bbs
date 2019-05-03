@@ -3,6 +3,7 @@ import os
 import contextlib
 import logging
 import application
+from flask import g
 
 def fetch_all_topics(where=None, limit=None):
     if where:
@@ -30,6 +31,15 @@ def update_topic(id, title=None, body=None):
     sql = "update topics set title = %s, body = %s where id = %s"
     with conn() as cursor:
         cursor.execute(sql, [title, body, id])
+
+def destroy_topic(id):
+    pass
+
+def get_db():
+    db = getattr(g, 'db', None)
+    if db is None:
+        db = g.db = conn()
+    return db
 
 # use `with` when call conn()!!
 # ex) with MySQLdb.connect(**args) as cur:
