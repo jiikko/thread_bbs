@@ -6,13 +6,13 @@ from flask import Flask
 def client():
     app = application.app
     app.testing = True
-    clean_tables(application)
 
-    with app.test_client() as client:
-        yield client
-
-    clean_tables(application)
+    with app.test_request_context():
+        clean_tables(application)
+        with app.test_client() as client:
+            yield client
+        clean_tables(application)
 
 def clean_tables(application):
-    with application.rdb.conn() as cursor:
+    with application.rdb.get_db() as cursor:
         cursor.execute('truncate table topics')

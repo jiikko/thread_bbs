@@ -14,10 +14,10 @@ def top():
 
 @app.teardown_request
 def teardown_db(exception):
-    print('start teardown_db')
+    logging.info('start teardown_db')
     db = getattr(g, 'db', None)
     if db is not None:
-        print('has db')
+        logging.info('has db')
         db.close()
     else:
-        print('has no db')
+        logging.info('has no db')

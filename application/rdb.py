@@ -13,7 +13,7 @@ def fetch_all_topics(where=None, limit=None):
     if limit:
         sql += (' limit %d' % limit)
     result = None
-    with conn() as cursor:
+    with get_db() as cursor:
         cursor.execute(sql)
         result = cursor.fetchall()
     return result
@@ -24,12 +24,12 @@ def find_topic(id):
 
 def insert_topics(title=None, body=None):
     sql = "insert into topics(title, body) values(%s, %s)"
-    with conn() as cursor:
+    with get_db() as cursor:
         cursor.execute(sql, [title, body])
 
 def update_topic(id, title=None, body=None):
     sql = "update topics set title = %s, body = %s where id = %s"
-    with conn() as cursor:
+    with get_db() as cursor:
         cursor.execute(sql, [title, body, id])
 
 def destroy_topic(id):
