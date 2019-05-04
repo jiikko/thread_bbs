@@ -1,6 +1,6 @@
 import pytest
 import application
-import tests.helpers.topic
+from tests.helpers import topic as topic_helper
 
 def test_get_topics_index(client):
     response = client.get('/topics/')
@@ -26,7 +26,7 @@ def test_get_topics_edit(client):
     title = 'test_get_topics_edit_title'
     body = 'test_get_topics_edit_body'
     application.rdb.insert_topics(title=title, body=body)
-    topic_id = tests.helpers.topic.create_topic(title=title, body=body)['id']
+    topic_id = topic_helper.create_topic(title=title, body=body)['id']
 
     response = client.get('/topics/%s/edit' % topic_id)
     assert response.status_code == 200
@@ -37,11 +37,17 @@ def test_get_topics_edit(client):
 def test_post_topics_edit(client):
     title = 'test_get_topics_edit_title'
     body = 'test_get_topics_edit_body'
-    topic_id = tests.helpers.topic.create_topic(title=title, body=body)['id']
+    topic_id = topic_helper.create_topic(title=title, body=body)['id']
     response = client.post('/topics/%s/edit' % topic_id, data={ 'title': 'titletitle', 'body': 'bodybody' })
     assert response.status_code == 302
 
     response = client.get('/topics/%s' % topic_id)
     actual = response.get_data()
-    assert 'titletitle' on actual
+    assert 'titletitle' in actual
     assert 'bodybody' in actual
+
+def test_post_topics_delete(client):
+    topic_id = topic_helper.create_topic(title='title', body='body')['id']
+    response = client.post('/topics/%s/delete' % topic_id, data={ 'id': topic_id })
+    assert response.status_code == 302
+    assert(not topic_helper.is_exists_topic(topic_id))

@@ -33,11 +33,7 @@ def show(id):
     topic = rdb.find_topic(id)
     return render_template('topics/show.html', topic=topic)
 
-@topic.route('/<id>/delete', methods=['GET', 'POST'])
-def destroy(id):
-    method = request.args.get("method", 'GET')
-    if method == 'POST':
-        rdb.destroy_topic(id)
-        return redirect('/topics/')
-    else:
-        return redirect(url_for('topic.show', id=id))
+@topic.route('/<id>/delete', methods=['POST'])
+def delete(id):
+    rdb.destroy_topic(id)
+    return redirect('/topics/')

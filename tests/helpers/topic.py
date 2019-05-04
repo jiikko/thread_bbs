@@ -9,3 +9,10 @@ def create_topic(title=None, body=None):
         row = cursor.fetchone()
     topic = { 'id': row[0], 'title': row[1], 'body': row[2] }
     return topic
+
+def is_exists_topic(id):
+    result = None
+    with application.rdb.conn() as cursor:
+        cursor.execute("select 1 from topics where id= %s", [id])
+        result = cursor.fetchone()
+    return result
