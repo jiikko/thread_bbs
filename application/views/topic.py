@@ -13,7 +13,7 @@ def new():
     else:
         return render_template('topics/new.html')
 
-@topic.route('/<id>/edit', methods=['POST', 'GET'])
+@topic.route('/<int:id>/edit', methods=['POST', 'GET'])
 def edit(id):
     logging.info(request.form)
     if request.method == 'POST':
@@ -28,12 +28,12 @@ def index():
     topics = rdb.fetch_all_topics()
     return render_template('topics/index.html', topics=topics)
 
-@topic.route('/<id>')
+@topic.route('/<int:id>')
 def show(id):
     topic = rdb.find_topic(id)
     return render_template('topics/show.html', topic=topic)
 
-@topic.route('/<id>/delete', methods=['POST'])
+@topic.route('/<int:id>/delete', methods=['POST'])
 def delete(id):
     rdb.destroy_topic(id)
     return redirect('/topics/')
