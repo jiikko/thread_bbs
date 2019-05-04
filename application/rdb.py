@@ -2,8 +2,7 @@ import MySQLdb
 import os
 import contextlib
 import logging
-import application
-from flask import g
+from flask import g, current_app
 
 def fetch_all_topics(where=None, limit=None):
     if where:
@@ -45,7 +44,7 @@ def get_db():
 # ex) with MySQLdb.connect(**args) as cur:
 #        cur.execute("INSERT INTO pokos (id, poko_name) VALUES (%s, %s)", (id, poko_name))
 def conn():
-    if application.app.config.get('TESTING'):
+    if current_app.config.get('TESTING'):
         logging.debug('environment: test')
         MYSQL_CONFIG = {
             'host': os.getenv("MYSQL_HOST", "127.0.0.1"),
