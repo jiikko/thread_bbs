@@ -2,3 +2,5 @@
 <a href='/topics/{{ topic[0] }}/edit'>編集</a>
 <h1>title: {{ topic[1] }}</h1>
 <p>{{ topic[2] }}</p>
+
+<a href='{{ url_for('topic.destroy', method='POST', id=topic[0]) }}'>削除する</a>

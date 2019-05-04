@@ -32,7 +32,9 @@ def update_topic(id, title=None, body=None):
         cursor.execute(sql, [title, body, id])
 
 def destroy_topic(id):
-    pass
+    sql = 'delete from topics where id = %s'
+    with get_db() as cursor:
+        cursor.execute(sql, [id])
 
 def get_db():
     db = getattr(g, 'db', None)
