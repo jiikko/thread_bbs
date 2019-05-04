@@ -12,7 +12,7 @@ def fetch_all_topics(where=None, limit=None):
     if limit:
         sql += (' limit %d' % limit)
     result = None
-    with get_db() as cursor:
+    with connconn() as cursor:
         cursor.execute(sql)
         result = cursor.fetchall()
     return result
@@ -23,18 +23,31 @@ def find_topic(id):
 
 def insert_topics(title=None, body=None):
     sql = "insert into topics(title, body) values(%s, %s)"
-    with get_db() as cursor:
+    with connconn() as cursor:
         cursor.execute(sql, [title, body])
 
 def update_topic(id, title=None, body=None):
     sql = "update topics set title = %s, body = %s where id = %s"
-    with get_db() as cursor:
+    with connconn() as cursor:
         cursor.execute(sql, [title, body, id])
 
 def destroy_topic(id):
     sql = 'delete from topics where id = %s'
-    with get_db() as cursor:
+    with connconn() as cursor:
         cursor.execute(sql, [id])
+
+
+# NOTE MySQL connection is closed at @app.teardown_request
+@contextlib.contextmanager
+def connconn():
+    db = get_db()
+    try:
+        cursor = db.cursor()
+        yield(cursor)
+    except:
+        db.rollback()
+    else:
+        db.commit()
 
 def get_db():
     db = getattr(g, 'db', None)
@@ -42,7 +55,7 @@ def get_db():
         db = g.db = conn()
     return db
 
-# use `with` when call conn()!!
+# use `with` when call conn() if don't close in teardown_db!!
 # ex) with MySQLdb.connect(**args) as cur:
 #        cur.execute("INSERT INTO pokos (id, poko_name) VALUES (%s, %s)", (id, poko_name))
 def conn():
