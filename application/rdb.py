@@ -37,7 +37,7 @@ def destroy_topic(id):
         cursor.execute(sql, [id])
 
 
-# NOTE MySQL connection is closed at @app.teardown_request
+# NOTE MySQL connection is closed by @app.teardown_request
 @contextlib.contextmanager
 def connconn():
     db = get_db()
@@ -45,8 +45,10 @@ def connconn():
         cursor = db.cursor()
         yield(cursor)
     except:
+        cursor.close()
         db.rollback()
     else:
+        cursor.close()
         db.commit()
 
 def get_db():
