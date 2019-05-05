@@ -12,7 +12,7 @@ def fetch_all_topics(where=None, limit=None):
     if limit:
         sql += (' limit %d' % limit)
     result = None
-    with connconn() as cursor:
+    with transaction() as cursor:
         cursor.execute(sql)
         result = cursor.fetchall()
     return result
@@ -23,23 +23,23 @@ def find_topic(id):
 
 def insert_topics(title=None, body=None):
     sql = "insert into topics(title, body) values(%s, %s)"
-    with connconn() as cursor:
+    with transaction() as cursor:
         cursor.execute(sql, [title, body])
 
 def update_topic(id, title=None, body=None):
     sql = "update topics set title = %s, body = %s where id = %s"
-    with connconn() as cursor:
+    with transaction() as cursor:
         cursor.execute(sql, [title, body, id])
 
 def destroy_topic(id):
     sql = 'delete from topics where id = %s'
-    with connconn() as cursor:
+    with transaction() as cursor:
         cursor.execute(sql, [id])
 
 
 # NOTE MySQL connection is closed by @app.teardown_request
 @contextlib.contextmanager
-def connconn():
+def transaction():
     db = get_db()
     try:
         cursor = db.cursor()
