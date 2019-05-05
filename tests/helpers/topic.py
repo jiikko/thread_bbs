@@ -1,4 +1,5 @@
 import application
+from application.models.topic import Topic
 
 def create_topic(title=None, body=None):
     title = 'test_get_topics_edit_title'
@@ -11,8 +12,4 @@ def create_topic(title=None, body=None):
     return topic
 
 def is_exists_topic(id):
-    result = None
-    with application.rdb.conn() as cursor:
-        cursor.execute("select 1 from topics where id= %s", [id])
-        result = cursor.fetchone()
-    return result
+    return True if Topic.find(id) else False

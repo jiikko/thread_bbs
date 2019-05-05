@@ -17,10 +17,6 @@ def fetch_all_topics(where=None, limit=None):
         result = cursor.fetchall()
     return result
 
-def find_topic(id):
-    where_clause = 'id = %s' % id
-    return fetch_all_topics(where=where_clause, limit=1)[0]
-
 def insert_topics(title=None, body=None):
     sql = "insert into topics(title, body) values(%s, %s)"
     with transaction() as cursor:

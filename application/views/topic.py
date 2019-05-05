@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, url_for
 from werkzeug.utils import redirect
 from application import rdb
 import logging
+from application.models.topic import Topic
 
 topic = Blueprint('topic', __name__)
 
@@ -20,7 +21,7 @@ def edit(id):
         rdb.update_topic(id, title=request.form['title'], body=request.form['body'])
         return redirect("/topics/%s" % id)
     else:
-        topic = rdb.find_topic(id)
+        topic = Topic.find(id)
         return render_template('topics/edit.html', topic=topic)
 
 @topic.route('/')
@@ -30,7 +31,7 @@ def index():
 
 @topic.route('/<int:id>')
 def show(id):
-    topic = rdb.find_topic(id)
+    topic = Topic.find(id)
     return render_template('topics/show.html', topic=topic)
 
 @topic.route('/<int:id>/delete', methods=['POST'])
