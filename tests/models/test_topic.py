@@ -8,10 +8,11 @@ def test_new(client):
     assert 'body', topic.body
 
 def test_find(client):
-    topic_id = topic_helper.create_topic(title='title', body='body')['id']
-    topic = Topic.find(topic_id)
-    assert 'title', topic.title
-    assert 'body', topic.body
+    topic = Topic({ 'title': 'title2', 'body': 'body2' })
+    topic.save()
+    topic = Topic.find(topic.id())
+    assert 'title2', topic.title()
+    assert 'body2', topic.body()
     assert type(topic) == Topic
 
 def test_save(client):
