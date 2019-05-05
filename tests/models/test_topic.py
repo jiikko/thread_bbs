@@ -2,6 +2,9 @@ import pytest
 from application.models.topic import Topic
 from tests.helpers import topic as topic_helper
 
+def test_all(client):
+    pass
+
 def test_new(client):
     topic = Topic({ 'title': 'fi', 'body': 'body' })
     assert 'fi', topic.title
@@ -36,3 +39,8 @@ def test_save(client):
     topic = Topic.find(topic.id())
     assert topic.title() == 'fi'
     assert topic.body() == 'body'
+
+def test_destroy(client):
+    topic = Topic.create({ 'title': 'title2', 'body': 'body2' })
+    topic.destroy()
+    assert(not Topic.is_exists(topic.id()))

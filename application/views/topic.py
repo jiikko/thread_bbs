@@ -36,5 +36,6 @@ def show(id):
 
 @topic.route('/<int:id>/delete', methods=['POST'])
 def delete(id):
-    rdb.destroy_topic(id)
+    topic = Topic.find(id)
+    topic.destroy()
     return redirect('/topics/')

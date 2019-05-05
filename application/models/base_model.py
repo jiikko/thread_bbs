@@ -34,6 +34,12 @@ class BaseModel(object):
             cursor.execute(sql)
         return self
 
+    def destroy(self):
+        sql = 'delete from topics where id = %s'
+        with transaction() as cursor:
+            cursor.execute(sql, [self.id()])
+        return True
+
     @classmethod
     def find(cls, id):
         return cls.all(where=('id = %d' % id), limit=1)[0]
