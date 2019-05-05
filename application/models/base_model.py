@@ -26,7 +26,6 @@ class BaseModel(object):
             self.attrs[key] = attrs[key]
             values.append('%s = "%s"' % (key, attrs[key]))
         # TODO escape for sql injection
-        sql = "update topics set title = %s, body = %s where id = %s"
         sql = "update topics set "
         sql = sql + ', '.join(values)
         sql = sql + '  where id = %s' % self.id()

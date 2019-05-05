@@ -28,18 +28,6 @@ def test_update(client):
     assert 'title3', topic.title()
     assert 'body3', topic.body()
 
-def test_save(client):
-    # TODO
-    return
-    topic = Topic({ 'title': 'fi', 'body': 'body' })
-    assert topic.id() == None
-    topic.save()
-    assert topic.title() == 'fi'
-    assert topic.body() == 'body'
-    topic = Topic.find(topic.id())
-    assert topic.title() == 'fi'
-    assert topic.body() == 'body'
-
 def test_destroy(client):
     topic = Topic.create({ 'title': 'title2', 'body': 'body2' })
     topic.destroy()
