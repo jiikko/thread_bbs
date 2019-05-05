@@ -3,7 +3,17 @@ from application.models.topic import Topic
 from tests.helpers import topic as topic_helper
 
 def test_all(client):
-    pass
+    topic1 = Topic.create({ 'title': 'title1', 'body': 'body1' })
+    topic2 = Topic.create({ 'title': 'title2', 'body': 'body2' })
+    topics = Topic.all()
+    assert len(topics) == 2
+    assert Topic.find(topic1.id()).title() == topic1.title()
+    assert Topic.find(topic1.id()).body() == topic1.body()
+    assert Topic.find(topic2.id()).title() == topic2.title()
+    assert Topic.find(topic2.id()).body() == topic2.body()
+
+    topics = Topic.all(limit=1)
+    assert len(topics) == 1
 
 def test_new(client):
     topic = Topic({ 'title': 'fi', 'body': 'body' })
