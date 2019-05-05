@@ -17,17 +17,13 @@ class BaseModel(object):
         values = []
         for key in self.attrs:
             columns.append(key)
-            value = self.attrs[key]
-            values.append(key)
+            values.append('"%s"' % self.attrs[key])
         # TODO escape for sql injection
-        sql = 'insert into topics (' + ', '.join(columns) + ')'
+        sql = 'insert into topics (' + ', '.join(columns) + ') '
         sql = sql + 'values (' + ', '.join(values) + ')'
-        inserted_id = None
         with transaction() as cursor:
             cursor.execute(sql)
-            cursor.execute('select last_insert_id()')
-            inserted_id = int(cursor.fetchone()[0])
-        self.attrs['id'] = inserted_id
+            self.attrs['id'] = int(get_db().insert_id())
 
     def is_new_record(self):
         pass
@@ -58,19 +54,16 @@ def transaction():
     try:
         cursor = db.cursor()
         yield(cursor)
+        logging.info(cursor._last_executed)
     except:
+        import traceback
+        traceback.print_exc()
+        print 'ocurret error in transaction'
         cursor.close()
         db.rollback()
     else:
         cursor.close()
         db.commit()
-
-def get_db():
-    db = getattr(g, 'db', None)
-    if db is None:
-        db = g.db = conn()
-    return db
-
 
 def get_db():
     db = getattr(g, 'db', None)

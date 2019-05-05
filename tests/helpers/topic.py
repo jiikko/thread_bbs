@@ -4,7 +4,7 @@ from application.models.topic import Topic
 def create_topic(title=None, body=None):
     title = 'test_get_topics_edit_title'
     body = 'test_get_topics_edit_body'
-    application.rdb.insert_topics(title=title, body=body)
+    Topic({ 'title': title, 'body': body }).save()
     with application.rdb.conn() as cursor:
         cursor.execute("select * from topics where title = %s", [title])
         row = cursor.fetchone()

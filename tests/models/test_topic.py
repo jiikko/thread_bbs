@@ -18,5 +18,8 @@ def test_save(client):
     topic = Topic({ 'title': 'fi', 'body': 'body' })
     assert topic.id() == None
     topic.save()
-    assert type(topic.id()) == int
-    assert type(Topic.find(topic.id())) == Topic
+    assert topic.title() == 'fi'
+    assert topic.body() == 'body'
+    topic = Topic.find(topic.id())
+    assert topic.title() == 'fi'
+    assert topic.body() == 'body'

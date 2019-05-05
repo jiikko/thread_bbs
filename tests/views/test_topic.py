@@ -1,6 +1,7 @@
 import pytest
 import application
 from tests.helpers import topic as topic_helper
+from application.models.topic import Topic
 
 def test_get_topics_index(client):
     response = client.get('/topics/')
@@ -25,7 +26,7 @@ def test_post_topics_new(client):
 def test_get_topics_edit(client):
     title = 'test_get_topics_edit_title'
     body = 'test_get_topics_edit_body'
-    application.rdb.insert_topics(title=title, body=body)
+    Topic({ 'title': title, 'body': body }).save()
     topic_id = topic_helper.create_topic(title=title, body=body)['id']
 
     response = client.get('/topics/%s/edit' % topic_id)
