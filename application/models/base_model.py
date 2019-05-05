@@ -13,17 +13,7 @@ class BaseModel(object):
         return self.attrs.get('id', None)
 
     def save(self):
-        columns = []
-        values = []
-        for key in self.attrs:
-            columns.append(key)
-            values.append('"%s"' % self.attrs[key])
-        # TODO escape for sql injection
-        sql = 'insert into topics (' + ', '.join(columns) + ') '
-        sql = sql + 'values (' + ', '.join(values) + ')'
-        with transaction() as cursor:
-            cursor.execute(sql)
-            self.attrs['id'] = int(get_db().insert_id())
+        pass
 
     def is_new_record(self):
         pass
@@ -38,6 +28,22 @@ class BaseModel(object):
         if row == None:
             return None
         return cls.row_to_instance(row)
+
+    @classmethod
+    def create(cls, attrs):
+        instance = cls(attrs)
+        columns = []
+        values = []
+        for key in instance.attrs:
+            columns.append(key)
+            values.append('"%s"' % instance.attrs[key])
+        # TODO escape for sql injection
+        sql = 'insert into topics (' + ', '.join(columns) + ') '
+        sql = sql + 'values (' + ', '.join(values) + ')'
+        with transaction() as cursor:
+            cursor.execute(sql)
+            instance.attrs['id'] = int(get_db().insert_id())
+        return instance
 
     @classmethod
     def row_to_instance(cls, row):

@@ -26,9 +26,7 @@ def test_post_topics_new(client):
 def test_get_topics_edit(client):
     title = 'test_get_topics_edit_title'
     body = 'test_get_topics_edit_body'
-    Topic({ 'title': title, 'body': body }).save()
-    topic = Topic({ 'title': title, 'body': body })
-    topic.save()
+    topic = Topic.create({ 'title': title, 'body': body })
 
     response = client.get('/topics/%s/edit' % topic.id())
     assert response.status_code == 200
@@ -39,8 +37,7 @@ def test_get_topics_edit(client):
 def test_post_topics_edit(client):
     title = 'test_get_topics_edit_title'
     body = 'test_get_topics_edit_body'
-    topic = Topic({ 'title': title, 'body': body })
-    topic.save()
+    topic = Topic.create({ 'title': title, 'body': body })
     response = client.post('/topics/%s/edit' % topic.id(), data={ 'title': 'titletitle', 'body': 'bodybody' })
     assert response.status_code == 302
 
@@ -50,8 +47,7 @@ def test_post_topics_edit(client):
     assert 'bodybody' in actual
 
 def test_post_topics_delete(client):
-    topic = Topic({ 'title': 'title', 'body': 'body' })
-    topic.save()
+    topic = Topic.create({ 'title': 'title', 'body': 'body' })
     response = client.post('/topics/%s/delete' % topic.id(), data={ 'id': topic.id() })
     assert response.status_code == 302
     assert(not Topic.find(topic.id()))

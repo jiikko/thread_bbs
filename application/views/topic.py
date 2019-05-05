@@ -9,7 +9,7 @@ topic = Blueprint('topic', __name__)
 @topic.route('/new', methods=['POST', 'GET'])
 def new():
     if request.method == 'POST':
-        Topic({ 'title': request.form['title'], 'body': request.form['body'] }).save()
+        Topic.create({ 'title': request.form['title'], 'body': request.form['body'] })
         return redirect("/topics/")
     else:
         return render_template('topics/new.html')
