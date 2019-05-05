@@ -2,6 +2,11 @@ from base_model import BaseModel
 
 class Topic(BaseModel):
     TABLE_NAME = 'topics'
+    COLUMNS = {
+            'id': 'int',
+            'title': 'string',
+            'body': 'string',
+            }
 
     @classmethod
     def row_to_instance(cls, row):
@@ -11,7 +16,7 @@ class Topic(BaseModel):
         super(Topic, self).__init__(attrs)
 
     def title(self):
-        return self.attrs['title']
+        return self.attrs.get('title', None)
 
     def body(self):
-        return self.attrs['body']
+        return self.attrs.get('body', None)

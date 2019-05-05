@@ -13,3 +13,10 @@ def test_find(client):
     assert 'title', topic.title
     assert 'body', topic.body
     assert type(topic) == Topic
+
+def test_save(client):
+    topic = Topic({ 'title': 'fi', 'body': 'body' })
+    assert topic.id() == None
+    topic.save()
+    assert type(topic.id()) == int
+    assert type(Topic.find(topic.id())) == Topic
