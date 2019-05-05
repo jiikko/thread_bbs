@@ -17,11 +17,6 @@ def fetch_all_topics(where=None, limit=None):
         result = cursor.fetchall()
     return result
 
-def update_topic(id, title=None, body=None):
-    sql = "update topics set title = %s, body = %s where id = %s"
-    with transaction() as cursor:
-        cursor.execute(sql, [title, body, id])
-
 def destroy_topic(id):
     sql = 'delete from topics where id = %s'
     with transaction() as cursor:

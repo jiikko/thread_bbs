@@ -14,6 +14,17 @@ def test_find(client):
     assert 'body2', topic.body()
     assert type(topic) == Topic
 
+def test_update(client):
+    topic = Topic.create({ 'title': 'title2', 'body': 'body2' })
+    assert 'title2', topic.title()
+    assert 'body2', topic.body()
+    topic.update({ 'title': 'title3', 'body': 'body3' })
+    assert 'title3', topic.title()
+    assert 'body3', topic.body()
+    topic = Topic.find(topic.id())
+    assert 'title3', topic.title()
+    assert 'body3', topic.body()
+
 def test_save(client):
     # TODO
     return

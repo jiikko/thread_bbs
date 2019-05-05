@@ -16,7 +16,24 @@ class BaseModel(object):
         pass
 
     def is_new_record(self):
-        pass
+        return self.id() == None
+
+    def update(self, attrs={}):
+        if self.is_new_record():
+            return self
+
+        values = []
+        for key in attrs:
+            self.attrs[key] = attrs[key]
+            values.append('%s = "%s"' % (key, attrs[key]))
+        # TODO escape for sql injection
+        sql = "update topics set title = %s, body = %s where id = %s"
+        sql = "update topics set "
+        sql = sql + ', '.join(values)
+        sql = sql + '  where id = %s' % self.id()
+        with transaction() as cursor:
+            cursor.execute(sql)
+        return self
 
     @classmethod
     def find(cls, id):

@@ -16,9 +16,9 @@ def new():
 
 @topic.route('/<int:id>/edit', methods=['POST', 'GET'])
 def edit(id):
-    logging.info(request.form)
+    topic = Topic.find(id)
     if request.method == 'POST':
-        rdb.update_topic(id, title=request.form['title'], body=request.form['body'])
+        topic.update({ 'title': request.form['title'], 'body': request.form['body'] })
         return redirect("/topics/%s" % id)
     else:
         topic = Topic.find(id)
