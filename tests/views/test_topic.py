@@ -4,8 +4,12 @@ from tests.helpers import topic as topic_helper
 from application.models.topic import Topic
 
 def test_get_topics_index(client):
+    expected_title = 'indexindex_title'
+    topic = Topic.create({ 'title': expected_title, 'body': 'a' })
     response = client.get('/topics/')
     assert response.status_code == 200
+    actual = response.get_data() 
+    assert expected_title in actual
 
 def test_get_topics_new(client):
     response = client.get('/topics/new')
@@ -50,4 +54,4 @@ def test_post_topics_delete(client):
     topic = Topic.create({ 'title': 'title', 'body': 'body' })
     response = client.post('/topics/%s/delete' % topic.id(), data={ 'id': topic.id() })
     assert response.status_code == 302
-    assert(not Topic.find(topic.id()))
+    assert(not Topic.is_exists(topic.id()))

@@ -21,7 +21,6 @@ class BaseModel(object):
     def update(self, attrs={}):
         if self.is_new_record():
             return self
-
         values = []
         for key in attrs:
             self.attrs[key] = attrs[key]
@@ -37,14 +36,27 @@ class BaseModel(object):
 
     @classmethod
     def find(cls, id):
-        sql = 'select * from %s where id = %s' % (cls.TABLE_NAME, id)
-        row = None
-        with rdb.transaction() as cursor:
+        return cls.all(where=('id = %d' % id), limit=1)[0]
+
+    @classmethod
+    def is_exists(cls, id):
+        result = cls.all(where=('id = %d' % id), limit=1)
+        return len(result) == 1
+
+    @classmethod
+    def all(cls, where=None, limit=None):
+        if where:
+            sql = "select * from topics where %s" % where
+        else:
+            sql = "select * from topics"
+        if limit:
+            sql += (' limit %d' % limit)
+        result = None
+        with transaction() as cursor:
             cursor.execute(sql)
-            row = cursor.fetchone()
-        if row == None:
-            return None
-        return cls.row_to_instance(row)
+            rows = cursor.fetchall()
+            result = map(lambda(row): (cls.row_to_instance(row)), rows)
+        return result
 
     @classmethod
     def create(cls, attrs):

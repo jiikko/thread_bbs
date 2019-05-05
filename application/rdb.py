@@ -4,19 +4,6 @@ import contextlib
 import logging
 from flask import g, current_app
 
-def fetch_all_topics(where=None, limit=None):
-    if where:
-        sql = "select * from topics where %s" % (where)
-    else:
-        sql = "select * from topics"
-    if limit:
-        sql += (' limit %d' % limit)
-    result = None
-    with transaction() as cursor:
-        cursor.execute(sql)
-        result = cursor.fetchall()
-    return result
-
 def destroy_topic(id):
     sql = 'delete from topics where id = %s'
     with transaction() as cursor:

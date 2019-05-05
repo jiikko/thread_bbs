@@ -26,7 +26,7 @@ def edit(id):
 
 @topic.route('/')
 def index():
-    topics = rdb.fetch_all_topics()
+    topics = Topic.all()
     return render_template('topics/index.html', topics=topics)
 
 @topic.route('/<int:id>')
