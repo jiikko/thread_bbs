@@ -4,12 +4,6 @@ import contextlib
 import logging
 from flask import g, current_app
 
-def destroy_topic(id):
-    sql = 'delete from topics where id = %s'
-    with transaction() as cursor:
-        cursor.execute(sql, [id])
-
-
 # NOTE MySQL connection is closed by @app.teardown_request
 @contextlib.contextmanager
 def transaction():
@@ -17,7 +11,11 @@ def transaction():
     try:
         cursor = db.cursor()
         yield(cursor)
+        logging.info(cursor._last_executed)
     except:
+        import traceback
+        traceback.print_exc()
+        print 'ocurret error in transaction'
         cursor.close()
         db.rollback()
     else:
