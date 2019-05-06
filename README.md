@@ -16,3 +16,5 @@ open http://localhost:8080
 * model validation
 * ログイン機能
 * migration機能
+* テンプレートのパーシャル化
+* テスト時に1テスト毎にロールバックしたい
