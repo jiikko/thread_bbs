@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, url_for
 from werkzeug.utils import redirect
-from application import rdb
 import logging
 from application.models.topic import Topic
 
