@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, request, url_for
 from werkzeug.utils import redirect
 import logging
 from application.models.topic import Topic
+from application.models.comment import Comment
 
 topic = Blueprint('topic', __name__)
 
@@ -38,3 +39,12 @@ def delete(id):
     topic = Topic.find(id)
     topic.destroy()
     return redirect(url_for('topic.index'))
+
+@topic.route('/<int:id>/comments/new', methods=['POST', 'GET'])
+def new_comment(id):
+    topic = Topic.find(id)
+    if request.method == 'POST':
+        Comment.create({ 'topic_id': topic.id(), 'body': request.form['comment_body'] })
+        return redirect(url_for('topic.show', id=id))
+    else:
+        return render_template('comments/new.html', topic=topic)

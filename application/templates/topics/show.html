@@ -1,6 +1,7 @@
 <a href='{{ url_for("topic.index") }}'>一覧に戻る</a>
 
 <a href='{{ url_for("topic.edit", id=topic.id()) }}'>編集</a>
+<a href='{{ url_for("topic.new_comment", id=topic.id()) }}''>このトピックに書き込む</a>
 <h1>title: {{ topic.title() }}</h1>
 <p>{{ topic.body() }}</p>
 

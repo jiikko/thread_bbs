@@ -1,0 +1,8 @@
+<h1>{{ topic.title() }}への話題に投稿する</h1>
+<form method='post' action='{{ url_for("topic.new_comment", id=topic.id()) }}'>
+  <p>本文</p>
+  <input type='text' name='comment_body'>
+  <p>
+    <input type="submit" value='投稿する'>
+  </p>
+</form>
