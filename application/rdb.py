@@ -8,6 +8,7 @@ from flask import g, current_app
 @contextlib.contextmanager
 def transaction():
     db = get_db()
+    db.begin()
     try:
         cursor = db.cursor()
         yield(cursor)

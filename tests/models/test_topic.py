@@ -1,5 +1,6 @@
 import pytest
 from application.models.topic import Topic
+from application.models.comment import Comment
 from tests.helpers import topic as topic_helper
 
 def test_all(client):
@@ -42,3 +43,12 @@ def test_destroy(client):
     topic = Topic.create({ 'title': 'title2', 'body': 'body2' })
     topic.destroy()
     assert(not Topic.is_exists(topic.id()))
+
+def test_destroy_with_comment(client):
+    topic = Topic.create({ 'title': 'title1', 'body': 'body1' })
+    comment1 = Comment.create({ 'topic_id': topic.id(), 'body': 'body1' })
+    comment2 = Comment.create({ 'topic_id': topic.id(), 'body': 'body2' })
+    topic.destroy()
+    assert(not Topic.is_exists(topic.id()))
+    assert(not Comment.is_exists(comment1.id()))
+    assert(not Comment.is_exists(comment2.id()))

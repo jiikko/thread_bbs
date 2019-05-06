@@ -13,8 +13,10 @@ class Topic(BaseModel):
     def row_to_instance(cls, row):
         return cls({ 'id': row[0], 'title': row[1], 'body': row[2] })
 
-    def __init__(self, attrs={}):
-        super(Topic, self).__init__(attrs)
+    def destroy(self):
+        comments = Comment.all(where='topic_id = %s' % self.id())
+        [comment.destroy() for comment in comments]
+        super(Topic, self).destroy()
 
     def title(self):
         return self.attrs.get('title', None)
