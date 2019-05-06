@@ -4,7 +4,7 @@
 <ul>
 {% for topic in topics %}
   <li>
-    <a href='/topics/{{ topic.id() }}'>{{ topic.id() }} - {{ topic.title() }} </a>
+    <a href='{{ url_for("topic.show", id=topic.id()) }}'>{{ topic.id() }} - {{ topic.title() }} </a>
   </li>
 {% endfor %}
 </ul>

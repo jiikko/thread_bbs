@@ -1,5 +1,5 @@
 <h1>新しい投稿</h1>
-<form method='post' action='/topics/new'>
+<form method='post' action='{{ url_for("topic.new") }}'>
   <p>タイトル</p>
   <input type='text' name='title'>
   <p>本文</p>

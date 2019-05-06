@@ -9,7 +9,7 @@ topic = Blueprint('topic', __name__)
 def new():
     if request.method == 'POST':
         Topic.create({ 'title': request.form['title'], 'body': request.form['body'] })
-        return redirect("/topics/")
+        return redirect(url_for('topic.index'))
     else:
         return render_template('topics/new.html')
 
@@ -18,7 +18,7 @@ def edit(id):
     topic = Topic.find(id)
     if request.method == 'POST':
         topic.update({ 'title': request.form['title'], 'body': request.form['body'] })
-        return redirect("/topics/%s" % id)
+        return redirect(url_for('topic.show', id=id))
     else:
         topic = Topic.find(id)
         return render_template('topics/edit.html', topic=topic)
@@ -37,4 +37,4 @@ def show(id):
 def delete(id):
     topic = Topic.find(id)
     topic.destroy()
-    return redirect('/topics/')
+    return redirect(url_for('topic.index'))

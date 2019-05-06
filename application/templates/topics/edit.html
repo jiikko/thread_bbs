@@ -1,5 +1,6 @@
 <h1>投稿の編集</h1>
-<form method='post' action='/topics/{{ topic.id() }}/edit'>
+
+<form method='post' action={{ url_for('topic.edit', id=topic.id()) }}>
   <p>タイトル</p>
   <input type='text' name='title' value='{{ topic.title() }}'>
   <p>本文</p>
