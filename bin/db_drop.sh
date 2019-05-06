@@ -1,1 +1,4 @@
-docker-compose exec -T db mysql -uroot <<< 'drop database thread_bbs_development'
+from db.lib import maigure
+import config
+
+maigure.drop(config.env.to_mysql_config())

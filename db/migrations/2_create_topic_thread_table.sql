@@ -3,5 +3,5 @@ CREATE TABLE `comments` (
   `topic_id` int(11) NOT NULL,
   `body` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4
 ;

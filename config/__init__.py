@@ -7,6 +7,9 @@ def current_env():
             return 'test'
     except RuntimeError:
         pass
+    except ImportError:
+        # for noinstall flask env
+        pass
 
     now = os.getenv("ENV", None)
     if now == None:
