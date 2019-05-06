@@ -32,7 +32,8 @@ def index():
 @topic.route('/<int:id>')
 def show(id):
     topic = Topic.find(id)
-    return render_template('topics/show.html', topic=topic)
+    comments = topic.comments()
+    return render_template('topics/show.html', topic=topic, comments=comments)
 
 @topic.route('/<int:id>/delete', methods=['POST'])
 def delete(id):

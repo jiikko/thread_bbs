@@ -1,10 +1,21 @@
 <a href='{{ url_for("topic.index") }}'>一覧に戻る</a>
 
 <a href='{{ url_for("topic.edit", id=topic.id()) }}'>編集</a>
-<a href='{{ url_for("topic.new_comment", id=topic.id()) }}''>このトピックに書き込む</a>
+<a href='{{ url_for("topic.new_comment", id=topic.id()) }}'>このトピックに書き込む</a>
 <h1>title: {{ topic.title() }}</h1>
 <p>{{ topic.body() }}</p>
 
 <form action='{{ url_for("topic.delete", id=topic.id()) }}' method='POST'>
   <input type='submit' value='削除する'>
 </form>
+
+<h2>コメント一覧</h2>
+{% if (comments | length) == 0 %}
+<p>コメントはありません</p>
+{% endif %}
+
+<ul>
+{% for comment in comments %}
+  <li>{{ comment.body() }}</li>
+{% endfor %}
+</ul>

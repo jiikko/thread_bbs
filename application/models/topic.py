@@ -1,4 +1,5 @@
 from base_model import BaseModel
+from comment import Comment
 
 class Topic(BaseModel):
     TABLE_NAME = 'topics'
@@ -20,3 +21,6 @@ class Topic(BaseModel):
 
     def body(self):
         return self.attrs.get('body', None)
+
+    def comments(self):
+        return Comment.all(where='topic_id = %s' % self.id())
