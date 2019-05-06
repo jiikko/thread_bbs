@@ -26,7 +26,7 @@ class BaseModel(object):
             self.attrs[key] = attrs[key]
             values.append('%s = "%s"' % (key, attrs[key]))
         # TODO escape for sql injection
-        sql = "update topics set "
+        sql = "update %s set " % type(self).TABLE_NAME
         sql = sql + ', '.join(values)
         sql = sql + '  where id = %s' % self.id()
         with rdb.transaction() as cursor:
@@ -34,7 +34,7 @@ class BaseModel(object):
         return self
 
     def destroy(self):
-        sql = 'delete from topics where id = %s'
+        sql = 'delete from %s where id = %%s' % type(self).TABLE_NAME
         with rdb.transaction() as cursor:
             cursor.execute(sql, [self.id()])
         return True
@@ -50,10 +50,9 @@ class BaseModel(object):
 
     @classmethod
     def all(cls, where=None, limit=None):
+        sql = "select * from %s" % cls.TABLE_NAME
         if where:
-            sql = "select * from topics where %s" % where
-        else:
-            sql = "select * from topics"
+            sql = sql + " where %s" % where
         if limit:
             sql += (' limit %d' % limit)
         result = None
@@ -72,7 +71,8 @@ class BaseModel(object):
             columns.append(key)
             values.append('"%s"' % instance.attrs[key])
         # TODO escape for sql injection
-        sql = 'insert into topics (' + ', '.join(columns) + ') '
+        sql = 'insert into %s (' % cls.TABLE_NAME
+        sql = sql + ', '.join(columns) + ') '
         sql = sql + 'values (' + ', '.join(values) + ')'
         with rdb.transaction() as cursor:
             cursor.execute(sql)
