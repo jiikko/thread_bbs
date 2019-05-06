@@ -35,11 +35,4 @@ def get_db():
 def conn():
     import config
     logging.debug('environment: %s', config.current_env())
-    MYSQL_CONFIG = {
-        'host': config.env.MYSQL_HOST,
-        'user': config.env.MYSQL_USER,
-        'passwd':  config.env.MYSQL_PASSWD,
-        'db': config.env.MYSQL_DB,
-        'charset': config.env.MYSQL_CHARSET,
-    }
-    return MySQLdb.connect(**MYSQL_CONFIG)
+    return MySQLdb.connect(**config.env.to_mysql_config())

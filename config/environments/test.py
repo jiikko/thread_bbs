@@ -1,6 +1,7 @@
 import os
+from base import EnvironmentBase
 
-class EnvironmentTest(object):
+class EnvironmentTest(EnvironmentBase):
     MYSQL_HOST = os.getenv("MYSQL_HOST", "127.0.0.1")
     MYSQL_PORT = 3306
     MYSQL_USER = 'root'

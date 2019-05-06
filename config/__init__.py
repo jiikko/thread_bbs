@@ -1,5 +1,4 @@
 import os
-import importlib
 
 def current_env():
     try:
