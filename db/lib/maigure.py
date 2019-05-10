@@ -55,4 +55,4 @@ def drop(mysql_config):
     cursor.execute('drop database %s' % mysql_config['db'])
     cursor.close()
     conn.close()
-    print 'done drop "%s" databse' % mysql_config['db']
+    print 'done drop "%s" database' % mysql_config['db']
