@@ -56,3 +56,13 @@ def drop(mysql_config):
     cursor.close()
     conn.close()
     print 'done drop "%s" database' % mysql_config['db']
+
+def schema_load(mysql_config):
+    conn = MySQLdb.connect(**mysql_config)
+    cursor = conn.cursor()
+    sql = open('db/schema.sql').read()
+    cursor.executemany(sql)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    print 'done shema_load "%s" database' % mysql_config['db']
